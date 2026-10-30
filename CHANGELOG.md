@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add Endless Tower, an original momentum climber with wall bounces, one-way platforms, combos, rising-camera pressure, seeded routes, local records, a biome journal, 16 authored biome families, and endless remixed reaches.
+
 - Add independent Blob Volley 2D and 3D games with local two-player controls, jumping, net/head collisions, out-of-bounds rules, three-touch limits, and win-by-two scoring.
 
 - Add local two-player Pong with WASD/arrow-key controls, first-to-seven scoring, pause, restart, and automatic serves between points.

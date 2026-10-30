@@ -26,6 +26,8 @@ These execute real game scripts: the starters exercise Godot physics, while Pong
 
 - Blob Volley (2D and 3D): both players and jump bindings, simultaneous movement, court limits, pause, head contact and debounce, fast-ball substeps, net side/tape collisions, both scoring sides, serves, out-of-bounds, three-touch faults, deuce, and restart. The 3D version additionally checks real depth movement and bounds.
 
+- Endless Tower: actual physics movement/jumping, momentum bonus, wall bounce, one-way upward passage/landing, combo scoring without repeat farming, pause/journal, 15,000 reachable deterministic floors, 1,024 distinct regions, bounded streaming, camera/fall failure, and same-route restart.
+
 ## Manual play checklist
 
 - Launch the gallery on Mac and Linux; check every tile has readable text and artwork.
@@ -33,6 +35,7 @@ These execute real game scripts: the starters exercise Godot physics, while Pong
 - Launch each starter, collect all six items, win, restart, and return with Esc.
 - Play Pong with two people: move with WASD and the arrow keys, pause/resume with Space, reach seven points, restart with R, and return with Esc.
 - Rally in both Blob Volley versions with two people; try the depth movement and Space/Enter jumps in 3D.
+- Climb Endless Tower across biome boundaries; try hold-to-hop, wall bounces, combos, pause/journal, same/new route, and best-record persistence after closing and reopening.
 - Close a game using the window controls and confirm the gallery restores.
 - Try a long title, a missing thumbnail, an invalid manifest, and an empty games folder.
 - Move a portable bundle to another directory and play it without Python or Godot installed.

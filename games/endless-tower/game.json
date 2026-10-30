@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "endless-tower",
+  "title": "Endless Tower",
+  "description": "A momentum-powered climb through 16 biome families and endless remixed reaches. Chain jumps, bounce off walls, and outrun the rising camera.",
+  "dimension": "2d",
+  "thumbnail": "tile.svg",
+  "controls": "A/D or arrows: run. Space/W/Up: jump (hold to hop). P: pause. B: journal. R: retry route. N: new route. Esc: gallery."
+}

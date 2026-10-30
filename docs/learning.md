@@ -42,3 +42,7 @@ The camera is deliberately fixed at an angle and follows the player. There is no
 6. Explain the rule to someone and watch them play.
 
 For a concept refresher, try [GDQuest's Learn GDScript From Zero](https://gdquest.github.io/learn-gdscript/). Its lessons complement editing real games. It is optional and separate from this repository.
+
+## Endless Tower · procedural climbing
+
+[Open the tower guide](../games/endless-tower/README.md), then try changing one biome palette, adding a family to `biomes.gd`, or tuning acceleration in `player.gd`. Compare the same seed before and after a layout change. Keep adjacent floors reachable and run the smoke checks before trying a long climb.
