@@ -30,3 +30,7 @@ The included macOS workflow is intended to supply native checks after hosting. U
 ## GoDot Game Gallery rebrand
 
 After restoring the delivered archive, the project was renamed across the gallery, CLI (`ggg.py`), export names, identifiers, workflows, schema, and documentation. The 16 Python tests and all five Godot import/runtime checks passed again on Linux. Prior native-export limitations above remain open; exports were not rerun for this branding change.
+
+## Two-player Pong
+
+Added Pong as an independent game project. On Linux, the 16 Python tests, Ruff checks, GDScript formatting, and all six project import/runtime checks passed. Pong's runtime test covers all eight physical movement keys, independent and simultaneous controls, movement bounds, pause/resume, both walls, both paddles at maximum ball speed, scoring on both sides, automatic serves, match victory, and restart. Gallery discovery also passes with all three games present. Native Mac play and a human two-player playtest remain unverified; exports were not rerun for this addition.

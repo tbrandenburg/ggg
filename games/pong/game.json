@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "pong",
+  "title": "Pong · 2 Players",
+  "description": "A local two-player paddle duel. Rally together, aim your returns, and race to seven points.",
+  "dimension": "2d",
+  "thumbnail": "tile.svg",
+  "controls": "Player 1: WASD. Player 2: arrow keys. Space: serve/pause. R: restart. Esc: gallery."
+}
