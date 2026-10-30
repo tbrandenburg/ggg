@@ -1,0 +1,7 @@
+{
+  "files.exclude": {"**/.godot": true, "**/__pycache__": true, ".tools": true},
+  "json.schemas": [{"fileMatch": ["/games/*/game.json", "/templates/*/game.json"], "url": "./schema/game.schema.json"}],
+  "files.eol": "\n",
+  "editor.insertSpaces": true,
+  "[gdscript]": {"editor.insertSpaces": false, "editor.tabSize": 4}
+}

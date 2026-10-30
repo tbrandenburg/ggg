@@ -1,0 +1,35 @@
+name: Build playable bundles
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: macos-latest
+            platform: macos
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: python ggg.py setup --templates
+      - run: python ggg.py check --smoke
+      - run: python ggg.py build --platform ${{ matrix.platform }}
+      # tar preserves executable bits and macOS application bundle structure.
+      - run: tar -czf godot-game-gallery-${{ matrix.platform }}.tar.gz -C dist ${{ matrix.platform }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: godot-game-gallery-${{ matrix.platform }}
+          path: godot-game-gallery-${{ matrix.platform }}.tar.gz
+          if-no-files-found: error
+          retention-days: 14

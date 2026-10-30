@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "coin-garden",
+  "title": "Coin Garden",
+  "description": "Collect sunshine on a tiny platform adventure.",
+  "dimension": "2d",
+  "thumbnail": "tile.svg",
+  "controls": "A/D or arrows: move. Space: jump. R: restart. Esc: gallery."
+}
