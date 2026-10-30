@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add local two-player Pong with WASD/arrow-key controls, first-to-seven scoring, pause, restart, and automatic serves between points.
+- Add Pong runtime checks for both players, court boundaries, ball collisions, scoring, and match lifecycle.
+
 ## 0.1.0 — 2026-10-30
 
 - Introduce a native Godot gallery with eight tiles per page, search, and dimension filters.

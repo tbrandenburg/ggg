@@ -42,8 +42,9 @@ Open `games/moon-jumper/player.gd` in your favorite code editor. Change `speed` 
 | --- | --- | --- |
 | **Coin Garden · 2D** | Jump across platforms and collect six sun coins | Change jump height, rearrange coins, add a platform |
 | **Sky Steps · 3D** | Hop between floating islands and collect six sky sparks | Move an island, change gravity, add a spark |
+| **Pong · 2 Players · 2D** | Rally on one keyboard; first to seven wins | Tune ball speed, change paddle size, experiment with bounce angles |
 
-Both have movement, jumping, collisions, a win state, **R** to restart, and **Esc** to return to the gallery. Falling in Sky Steps returns you to the starting island while retaining collected sparks.
+Coin Garden and Sky Steps have movement, jumping, collisions, and a win state. Falling in Sky Steps returns you to the starting island while retaining collected sparks. Pong gives Player 1 **WASD** and Player 2 the **arrow keys**, with **Space** to serve or pause. Every game supports **R** to restart and **Esc** to return to the gallery. See [Pong's controls and learning experiments](games/pong/README.md).
 
 The gallery includes search, 2D/3D filters, keyboard focus, eight slots per page, empty slots for future ideas, and automatic return when a game closes. Games run in separate processes. Invalid manifests are skipped with a visible message; `check` explains the problem.
 

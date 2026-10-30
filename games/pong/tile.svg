@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" rx="20" fill="#102d3e"/>
+  <text x="32" y="46" fill="#b4c9cd" font-family="sans-serif" font-size="16" letter-spacing="4">TWO PLAYERS. ONE GREAT RALLY.</text>
+  <path d="M32 80H608M32 300H608" stroke="#42616e" stroke-width="2"/>
+  <path d="M320 90V290" stroke="#42616e" stroke-width="3" stroke-dasharray="10 14"/>
+  <rect x="88" y="142" width="16" height="84" rx="6" fill="#77e5ce"/>
+  <rect x="536" y="184" width="16" height="84" rx="6" fill="#ffa48c"/>
+  <circle cx="359" cy="165" r="6" fill="#ffe7a4" opacity=".15"/>
+  <circle cx="378" cy="155" r="8" fill="#ffe7a4" opacity=".3"/>
+  <circle cx="400" cy="145" r="11" fill="#ffe7a4"/>
+  <text x="32" y="337" fill="#77e5ce" font-family="sans-serif" font-size="18">WASD</text>
+  <text x="473" y="337" fill="#ffa48c" font-family="sans-serif" font-size="18">ARROW KEYS</text>
+</svg>
