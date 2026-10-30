@@ -24,12 +24,15 @@ This imports the launcher, all games, and both templates through the pinned Godo
 
 These execute real game scripts: the starters exercise Godot physics, while Pong checks its custom ball/paddle collision logic. They do not establish that every platform is fun or that every jump is reachable. The scripts also run independently when a learner tests a scene in the editor.
 
+- Blob Volley (2D and 3D): both players and jump bindings, simultaneous movement, court limits, pause, head contact and debounce, fast-ball substeps, net side/tape collisions, both scoring sides, serves, out-of-bounds, three-touch faults, deuce, and restart. The 3D version additionally checks real depth movement and bounds.
+
 ## Manual play checklist
 
 - Launch the gallery on Mac and Linux; check every tile has readable text and artwork.
 - Create nine games and refresh. Confirm page navigation and filtering stay correct.
 - Launch each starter, collect all six items, win, restart, and return with Esc.
 - Play Pong with two people: move with WASD and the arrow keys, pause/resume with Space, reach seven points, restart with R, and return with Esc.
+- Rally in both Blob Volley versions with two people; try the depth movement and Space/Enter jumps in 3D.
 - Close a game using the window controls and confirm the gallery restores.
 - Try a long title, a missing thumbnail, an invalid manifest, and an empty games folder.
 - Move a portable bundle to another directory and play it without Python or Godot installed.

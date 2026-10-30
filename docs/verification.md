@@ -34,3 +34,7 @@ After restoring the delivered archive, the project was renamed across the galler
 ## Two-player Pong
 
 Added Pong as an independent game project. On Linux, the 16 Python tests, Ruff checks, GDScript formatting, and all six project import/runtime checks passed. Pong's runtime test covers all eight physical movement keys, independent and simultaneous controls, movement bounds, pause/resume, both walls, both paddles at maximum ball speed, scoring on both sides, automatic serves, match victory, and restart. Gallery discovery also passes with all three games present. Native Mac play and a human two-player playtest remain unverified; exports were not rerun for this addition.
+
+## Blob Volley 2D and 3D
+
+Both original volleyball games passed Linux checks with the pinned Godot editor. All eight project import/runtime checks, all 16 Python tests, Ruff checks, and GDScript formatting passed. The new runtime checks cover physical key bindings, the normal input-to-physics path, simultaneous movement, jumping/landing, player bounds, pause, head contacts and debounce, fast-ball substeps, net side/tape collisions, scoring, automatic serves, out-of-bounds faults, three-touch limits, deuce, and restart. The 3D version also verifies depth movement and bounds. OpenGL renders of both courts were captured and visually inspected; screenshots are included in `docs/images/`. Human two-player rally testing, native Mac play, and new native exports remain unverified.
