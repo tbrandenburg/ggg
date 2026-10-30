@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "blob-volley-3d",
+  "title": "Blob Volley 3D",
+  "description": "Two bouncy blobs, one net. Full 3D volleyball with movement across the court. First to eleven, win by two.",
+  "dimension": "3d",
+  "thumbnail": "tile.svg",
+  "controls": "P1: WASD + Space jump. P2: arrows + Enter jump. F serve, P pause, R restart, Esc gallery."
+}

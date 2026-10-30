@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "blob-volley-2d",
+  "title": "Blob Volley 2D",
+  "description": "Two bouncy blobs, one net. Classic side-view volleyball. First to eleven, win by two.",
+  "dimension": "2d",
+  "thumbnail": "tile.svg",
+  "controls": "P1: A/D move, W jump, S fast fall. P2: arrows. F serve, P pause, R restart, Esc gallery."
+}

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add independent Blob Volley 2D and 3D games with local two-player controls, jumping, net/head collisions, out-of-bounds rules, three-touch limits, and win-by-two scoring.
+
 - Add local two-player Pong with WASD/arrow-key controls, first-to-seven scoring, pause, restart, and automatic serves between points.
 - Add Pong runtime checks for both players, court boundaries, ball collisions, scoring, and match lifecycle.
 
