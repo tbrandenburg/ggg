@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {"label": "GGG: Gallery", "type": "process", "command": "python3", "args": ["ggg.py", "gallery"], "problemMatcher": []},
+    {"label": "GGG: New game", "type": "process", "command": "python3", "args": ["ggg.py", "new", "${input:gameId}", "--dimension", "${input:dimension}"], "problemMatcher": []},
+    {"label": "GGG: Check everything", "type": "process", "command": "python3", "args": ["ggg.py", "check", "--smoke"], "problemMatcher": [], "group": "test"}
+  ],
+  "inputs": [
+    {"id": "gameId", "type": "promptString", "description": "New game folder name", "default": "moon-jumper"},
+    {"id": "dimension", "type": "pickString", "description": "Starter", "options": ["2d", "3d"], "default": "2d"}
+  ]
+}

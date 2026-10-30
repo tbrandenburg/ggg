@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/tbrandenburg/ggg/main/schema/game.schema.json",
+  "title": "GoDot Game Gallery game manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "title", "description", "dimension", "thumbnail", "controls"],
+  "properties": {
+    "schema_version": {"const": 1, "type": "integer"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 60},
+    "description": {"type": "string", "minLength": 1, "maxLength": 240},
+    "dimension": {"enum": ["2d", "3d"]},
+    "thumbnail": {"type": "string", "pattern": "\\.(svg|png|jpg)$"},
+    "controls": {"type": "string", "minLength": 1, "maxLength": 180}
+  }
+}
