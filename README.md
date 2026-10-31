@@ -101,7 +101,7 @@ make smoke
 
 The Python tools use only the standard library at runtime. Development dependencies are declared in `pyproject.toml` and resolved in the committed `uv.lock`. Run `uv add --dev PACKAGE` to add a development tool and commit both files. CI uses `uv sync --locked` to detect stale lockfiles.
 
-Run `make help` for setup, play, edit, validation, formatting, and export shortcuts. For example, `make new GAME=moon-jumper DIMENSION=2d`, `make play GAME=moon-jumper`, and `make build PLATFORM=linux`. See [AGENTS.md](AGENTS.md) for the development workflow. The Python package supplies an editable CLI for this checkout; share games using `uv run ggg build`, which exports the Godot projects. GitHub Actions are pinned to commit SHAs, permissions are read-only, and Dependabot proposes updates.
+Run `make help` for setup, play, edit, validation, formatting, and export shortcuts. For example, `make new GAME=moon-jumper DIMENSION=2d`, `make play GAME=moon-jumper`, and `make build PLATFORM=linux`. See [AGENTS.md](AGENTS.md) for the development workflow. The Python package supplies an editable CLI for this checkout; share games using `uv run ggg build`, which exports the Godot projects. GitHub Actions are pinned to commit SHAs. Dependabot patch and minor updates for uv and GitHub Actions are automatically merged after the checks workflow succeeds; major updates and failed checks remain for manual review.
 
 ## Read next
 
