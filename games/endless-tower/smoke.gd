@@ -55,30 +55,74 @@ static func run(game) -> void:
 	)
 	game.player.set_physics_process(false)
 	game.highest_landing = 0
+	game.last_landing = 0
 	game.score = 0
-	game.combo_steps = 0
-	game.combo_time = 0
+	game._break_combo()
+	game._award_floor(1)
+	assert(not game.flow_active and game.score == 10, "A one-floor jump scores without flow")
 	game._award_floor(3)
+	assert(game.flow_active and game.combo_steps == 2 and game.flow_burst > 0)
+	game._tick_flow(0.1)
+	assert(game.flow_trail.size() == 1)
+	var burst: float = game.flow_burst
+	game._award_floor(6)
+	assert(game.combo_steps == 5 and game.combo_multiplier() == 2 and game.score == 90)
+	assert(game.flow_burst == burst, "Continuing a combo must not repeat the activation burst")
 	game._award_floor(7)
-	assert(game.combo_steps == 7 and game.score > 70)
+	assert(not game.flow_active and game.combo_steps == 0 and game.score == 100)
+	assert(game.flow_trail.is_empty() and game.flow_burst == 0)
+	game._award_floor(9)
 	var earned: int = game.score
-	game._award_floor(7)
-	game._award_floor(2)
-	assert(game.score == earned, "Revisiting floors must not farm points")
-	game._physics_process(3.0)
-	assert(game.combo_steps == 0)
-	# Exercise actual pause/journal handlers, including the player's process state.
-	game._unhandled_input(_action("pause"))
-	var frozen_top: float = game.camera_top
-	var frozen_time: float = game.elapsed
-	game._physics_process(1.0)
-	assert(game.paused and game.camera_top == frozen_top and game.elapsed == frozen_time)
-	assert(not game.player.is_physics_processing())
-	game._unhandled_input(_action("pause"))
-	game._unhandled_input(_action("journal"))
-	assert(game.journal.visible and not game.player.is_physics_processing())
-	game._unhandled_input(_action("journal"))
-	assert(not game.journal.visible)
+	game._award_floor(9)
+	assert(not game.flow_active, "A same-floor landing must break flow")
+	game._award_floor(11)
+	earned = game.score
+	game._award_floor(4)
+	assert(not game.flow_active and game.last_landing == 4 and game.score == earned)
+	game._award_floor(6)
+	assert(game.flow_active and game.combo_steps == 2 and game.score == earned)
+	assert(game.highest_landing == 11, "Revisiting old floors must not farm points")
+	var strength: float = game.player.jump_strength()
+	game._break_combo()
+	assert(game.player.jump_strength() == strength, "Flow must not change jump physics")
+	game._award_floor(8)
+	game._tick_flow(0.1)
+	# Exercise actual pause/journal handlers, freezing both combo time and effects.
+	for action in ["pause", "journal"]:
+		game._unhandled_input(_action(action))
+		var frozen_top: float = game.camera_top
+		var frozen_time: float = game.elapsed
+		var frozen_combo: float = game.combo_time
+		var frozen_burst: float = game.flow_burst
+		var frozen_trail: Array = game.flow_trail.duplicate(true)
+		game._physics_process(1.0)
+		assert(game.camera_top == frozen_top and game.elapsed == frozen_time)
+		assert(game.combo_time == frozen_combo and game.flow_burst == frozen_burst)
+		assert(game.flow_trail == frozen_trail and game.flow_active)
+		assert(not game.player.is_physics_processing() and not game.labels["flow"].visible)
+		assert(game.journal.visible == (action == "journal"))
+		game._unhandled_input(_action(action))
+		assert(game.labels["flow"].visible)
+	game.player.set_physics_process(false)
+	for index in range(100):
+		game._tick_flow(0.001)
+	assert(game.flow_trail.size() <= 24, "Trail memory must stay bounded")
+	game._tick_flow(game.COMBO_WINDOW)
+	assert(not game.flow_active and game.combo_steps == 0 and game.flow_trail.is_empty())
+	game._award_floor(10)
+	assert(game.flow_active and game.combo_steps == 2, "An expired combo starts afresh")
+	game._award_floor(50)
+	assert(game.combo_multiplier() == 8, "Score multiplier is capped")
+	game._tick_flow(0.1)
+	game._finish()
+	assert(not game.flow_active and game.flow_trail.is_empty() and game.flow_burst == 0)
+	game._restart()
+	game.player.set_physics_process(false)
+	game._award_floor(3)
+	game._tick_flow(0.1)
+	game._restart()
+	assert(game.last_landing == 0 and not game.flow_active and game.combo_time == 0)
+	assert(game.flow_trail.is_empty() and game.flow_burst == 0 and not game.labels["flow"].visible)
 	game.player.set_physics_process(false)
 	var layout_checks = preload("res://layout_smoke.gd")
 	layout_checks.run(game)
@@ -132,5 +176,5 @@ static func run(game) -> void:
 	game.biome = game.Biomes.at_floor(0)
 	game._update_hud()
 	print(
-		"PASS Endless Tower: physics movement/jumps, momentum, wall bounce, one-way landing, combos, pause/journal, 15000 motion-validated randomized floors, 1024 biome regions, bounded streaming, camera/fall, replay, all 16 motifs"
+		"PASS Endless Tower: physics movement/jumps, momentum, wall bounce, one-way landing, multi-floor flow activation/breaks/scoring/effects, pause/journal, 15000 motion-validated randomized floors, 1024 biome regions, bounded streaming, camera/fall, replay, all 16 motifs"
 	)

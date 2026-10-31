@@ -22,7 +22,9 @@ python3 ggg.py play endless-tower
 
 Speed gives higher jumps. Walls reflect horizontal momentum. Platforms are one-way: pass through them from below, then land on top. A short jump buffer and coyote window make timing forgiving. The camera begins rising after your first jump and gradually speeds up; fall below the screen to end the run. Time spent reading the intro does not increase difficulty.
 
-Landing on new higher floors scores points. Chain landings within 2.5 seconds to build a multiplier, up to ×8; revisiting old floors cannot farm points. The altitude record measures the highest point you actually reach, while scoring requires a landing.
+Landing on new higher floors scores points. **Flow** activates when a jump lands at least **two floors above the previous landing**. Continue with another 2+ floor jump within **2.5 seconds** to refresh the meter and grow the chain. A one-floor, same-floor, or lower landing immediately breaks flow, as does an empty meter. Each five floors in the chain increases the score multiplier by one, up to **×8**. Revisiting old floors cannot farm points.
+
+A gold trail, halo, activation burst, and FLOW banner make the active combo visible. Pause and the journal freeze its timer and effects; retry and game over clear them. Flow rewards scoring and adds visual feedback; jump height still comes from horizontal momentum and the biome. These are this game’s explicit rules, inspired by classic combo climbing. All effects are drawn in code, with no external assets. The altitude record measures the highest point you actually reach, while scoring requires a landing.
 
 ## A tower of changing worlds
 

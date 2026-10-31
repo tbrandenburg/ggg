@@ -8,6 +8,9 @@ const Smoke := preload("res://smoke.gd")
 const VIEW_HEIGHT := 720.0
 const INK := Color("142d46")
 const PAPER := Color("eef4ed")
+const COMBO_WINDOW := 2.5
+const TRAIL_LIFETIME := 0.35
+const BURST_LIFETIME := 0.5
 
 var player: CharacterBody2D
 var camera: Camera2D
@@ -23,11 +26,16 @@ var journal_open := false
 var game_over := false
 var reached_floor := 0
 var highest_landing := 0
+var last_landing := 0
 var best_floor := 0
 var best_score := 0
 var score := 0
 var combo_steps := 0
 var combo_time := 0.0
+var flow_active := false
+var flow_trail: Array[Dictionary] = []
+var flow_burst := 0.0
+var flow_origin := Vector2.ZERO
 var biome: Dictionary
 var labels: Dictionary = {}
 var trail_labels: Array[Label] = []
@@ -91,9 +99,9 @@ func _restart() -> void:
 	game_over = false
 	reached_floor = 0
 	highest_landing = 0
+	last_landing = 0
 	score = 0
-	combo_steps = 0
-	combo_time = 0.0
+	_break_combo()
 	biome = Biomes.at_floor(0)
 	player.position = Vector2(576, Layout.START_Y - 32)
 	player.velocity = Vector2.ZERO
@@ -139,9 +147,7 @@ func _physics_process(delta: float) -> void:
 	if paused or journal_open or game_over:
 		return
 	elapsed += delta
-	combo_time = maxf(0, combo_time - delta)
-	if combo_time == 0:
-		combo_steps = 0
+	_tick_flow(delta)
 	_track_height()
 	player.friction_factor = biome["friction"]
 	player.biome_jump_bonus = biome["jump_bonus"]
@@ -183,18 +189,57 @@ func _on_landing() -> void:
 
 
 func _award_floor(floor_id: int) -> void:
-	if floor_id <= highest_landing:
-		return
-	var gained := floor_id - highest_landing
-	combo_steps = combo_steps + gained if combo_time > 0 else gained
-	combo_time = 2.5
-	highest_landing = floor_id
-	score += gained * 10 * mini(8, 1 + combo_steps / 5)
+	# Track every landing, including descents: the record is not the jump origin.
+	var jumped_floors := floor_id - last_landing
+	last_landing = floor_id
+	if jumped_floors >= 2:
+		if not flow_active:
+			flow_active = true
+			flow_burst = BURST_LIFETIME
+			flow_origin = player.position
+		combo_steps += jumped_floors
+		combo_time = COMBO_WINDOW
+	else:
+		_break_combo()
+	# Only new height earns points, even when an old floor starts a valid combo.
+	var gained := maxi(0, floor_id - highest_landing)
+	highest_landing = maxi(highest_landing, floor_id)
+	score += gained * 10 * combo_multiplier()
 	best_score = maxi(best_score, score)
+
+
+func combo_multiplier() -> int:
+	return mini(8, 1 + combo_steps / 5)
+
+
+func _break_combo() -> void:
+	combo_steps = 0
+	combo_time = 0.0
+	flow_active = false
+	flow_trail.clear()
+	flow_burst = 0.0
+
+
+func _tick_flow(delta: float) -> void:
+	combo_time = maxf(0, combo_time - delta)
+	if combo_time == 0:
+		_break_combo()
+		return
+	flow_burst = maxf(0, flow_burst - delta)
+	for index in range(flow_trail.size() - 1, -1, -1):
+		flow_trail[index]["life"] -= delta
+		if flow_trail[index]["life"] <= 0:
+			flow_trail.remove_at(index)
+	if flow_active:
+		flow_trail.append({"position": player.position, "life": TRAIL_LIFETIME})
+		# Keep effects bounded even if the physics tick rate is changed for experiments.
+		if flow_trail.size() > 24:
+			flow_trail.pop_front()
 
 
 func _finish() -> void:
 	game_over = true
+	_break_combo()
 	player.set_physics_process(false)
 	_persist()
 
@@ -324,6 +369,10 @@ func _build_hud() -> void:
 	)
 	upcoming.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(layer, "seed", "", Vector2(936, 674), Vector2(196, 22), 11, Color("9cb3bd"))
+	var flow_label := _label(
+		layer, "flow", "", Vector2(300, 32), Vector2(552, 64), 24, Color("f5ce70")
+	)
+	flow_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var overlay := _label(layer, "overlay", "", Vector2(300, 225), Vector2(552, 190), 24)
 	overlay.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	journal = PanelContainer.new()
@@ -347,11 +396,15 @@ func _update_hud() -> void:
 	labels["score"].text = str(score)
 	labels["best"].text = "BEST  %d floors · %d pts" % [best_floor, best_score]
 	labels["combo"].text = (
-		"CHAIN  %d · x%d" % [combo_steps, mini(8, 1 + combo_steps / 5)]
-		if combo_steps > 0
-		else "LAND HIGHER. KEEP GOING."
+		"FLOW  %d · x%d" % [combo_steps, combo_multiplier()]
+		if flow_active
+		else "JUMP 2+ FLOORS FOR FLOW"
 	)
-	combo_bar.value = combo_time / 2.5 * 100
+	combo_bar.value = combo_time / COMBO_WINDOW * 100
+	labels["flow"].text = (
+		"FLOW!  x%d\nKeep jumping 2+ floors" % combo_multiplier() if flow_active else ""
+	)
+	labels["flow"].visible = flow_active and not paused and not journal_open and not game_over
 	speed_bar.value = absf(player.velocity.x) / Climber.MAX_SPEED * 100
 	var region: int = biome["region"]
 	labels["reach"].text = "REGION %d · REACH %d" % [region + 1, int(biome["cycle"]) + 1]
@@ -412,8 +465,30 @@ func _draw() -> void:
 		draw_line(rect.position, Vector2(rect.end.x, rect.position.y), skin["accent"], 4)
 		if int(entry["id"]) % Biomes.FLOORS_PER_BIOME == 0 and int(entry["id"]) > 0:
 			draw_circle(rect.position + Vector2(10, -10), 4, skin["accent"])
+	_draw_flow()
 	draw_rect(Rect2(0, camera_top, 230, VIEW_HEIGHT), Color(0.04, 0.08, 0.12, 0.84))
 	draw_rect(Rect2(922, camera_top, 230, VIEW_HEIGHT), Color(0.04, 0.08, 0.12, 0.84))
+
+
+func _draw_flow() -> void:
+	var gold := Color("f5ce70")
+	for point in flow_trail:
+		var fade: float = point["life"] / TRAIL_LIFETIME
+		draw_circle(point["position"], 5 + fade * 9, Color(gold, fade * 0.35))
+	if flow_active:
+		draw_arc(player.position, 23, 0, TAU, 32, Color(gold, 0.6), 2, true)
+	if flow_burst > 0:
+		var progress := 1.0 - flow_burst / BURST_LIFETIME
+		draw_arc(flow_origin, 24 + progress * 60, 0, TAU, 48, Color(gold, 1 - progress), 3, true)
+		for index in range(8):
+			var direction := Vector2.from_angle(index * TAU / 8)
+			draw_line(
+				flow_origin + direction * (30 + progress * 48),
+				flow_origin + direction * (38 + progress * 58),
+				Color(gold, 1 - progress),
+				2,
+				true
+			)
 
 
 func _draw_motif(motif: String, accent: Color) -> void:
