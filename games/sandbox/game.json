@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "sandbox",
+  "title": "Sandbox",
+  "description": "Start with nothing, dig into a seeded world, and collect its natural materials.",
+  "dimension": "3d",
+  "thumbnail": "tile.svg",
+  "controls": "WASD/arrows: move. Shift: sprint. Space: jump. Mouse: orbit. Left click: dig. C: craft Stone Pick (3 stone). Wheel: zoom. Esc: cursor. F3: stats."
+}
