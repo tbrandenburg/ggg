@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://player.gd" id="1_player"]
+[ext_resource type="Script" path="res://world.gd" id="2_world"]
+[ext_resource type="Script" path="res://inventory.gd" id="3_inventory"]
+[ext_resource type="Script" path="res://survival_hud.gd" id="4_hud"]
+
+[sub_resource type="Environment" id="Environment_desert"]
+background_mode = 1
+background_color = Color(0.73, 0.82, 0.91, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.88, 0.82, 0.7, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="CapsuleMesh" id="Mesh_player"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="CapsuleShape3D" id="Shape_player"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Material_player"]
+albedo_color = Color(0.16, 0.42, 0.58, 1)
+roughness = 0.8
+
+[node name="Sandbox" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_desert")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-48, -25, 0)
+light_energy = 1.0
+shadow_enabled = true
+
+[node name="Terrain" type="Node3D" parent="."]
+script = ExtResource("2_world")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+position = Vector3(0, 1, 0)
+script = ExtResource("1_player")
+
+[node name="Inventory" type="Node" parent="Player"]
+script = ExtResource("3_inventory")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("Mesh_player")
+surface_material_override/0 = SubResource("Material_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("Shape_player")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 5, 9)
+current = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("4_hud")
