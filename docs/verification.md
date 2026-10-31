@@ -38,3 +38,19 @@ Added Pong as an independent game project. On Linux, the 16 Python tests, Ruff c
 ## Blob Volley 2D and 3D
 
 Both original volleyball games passed Linux checks with the pinned Godot editor. All eight project import/runtime checks, all 16 Python tests, Ruff checks, and GDScript formatting passed. The new runtime checks cover physical key bindings, the normal input-to-physics path, simultaneous movement, jumping/landing, player bounds, pause, head contacts and debounce, fast-ball substeps, net side/tape collisions, scoring, automatic serves, out-of-bounds faults, three-touch limits, deuce, and restart. The 3D version also verifies depth movement and bounds. OpenGL renders of both courts were captured and visually inspected; screenshots are included in `docs/images/`. Human two-player rally testing, native Mac play, and new native exports remain unverified.
+
+## Endless Tower
+
+This first record describes layout v1; the randomized v2 revision below supersedes its overlap-based generation checks.
+
+On Linux with the pinned Godot editor, all nine project import/runtime checks passed. The climber test exercises real movement and jumping, momentum-dependent jump strength, wall reflection, one-way upward passage and descending landings, scoring/combos without repeat farming, pause/journal, camera pressure, falling, and same-route replay. It also checks 15,000 adjacent floor pairs across three seeds, 1,024 distinct generated region identities, and bounded platform streaming at distant heights. Intro reading time does not increase camera difficulty.
+
+The 16 Python tests and code-format checks pass. All 16 biome families plus the first remixed reach were rendered with OpenGL without script errors; representative Glacier Gate, Mosswood, Ember Forge, Aurora Reach, and remixed Glacier renders were visually inspected. The included screenshots are actual engine renders at developer-selected preview heights, rather than evidence of a human completing those climbs. Human difficulty/playtesting, native Mac play, record persistence on a native desktop, and new exports remain unverified.
+
+## Randomized tower layout · version 2
+
+The fixed-height sine staircase was replaced by seeded constrained sampling. The level mean width now follows `84 + 136 * exp(-level / 8)`, with balanced shuffled variation; rises vary from approximately 62 to 106 pixels. Streaming and altitude use the generated height map. Research and assumptions are documented in `games/endless-tower/GENERATION.md`.
+
+On Linux, all nine project import/runtime checks passed. Across 15,000 edges from three seeds, each jump passed the baseline movement model in still air and both maximum wind directions; 8,393 sampled edges had non-overlapping platform spans. Observed widths ranged 60.5–280.8 pixels and rises 62.0–106.0 pixels. Tests checked smaller level means, variation, chunk seams, cache eviction/replay, and height lookup. Eight independent transfers using the actual Godot character, one-way colliders, and keyboard actions also passed. The existing 16 Python tests and formatting checks pass.
+
+Updated representative screenshots are actual engine renders at developer-selected heights. Human difficulty testing, native Mac play, and new native exports remain unverified. Old seeds intentionally produce new routes under layout version 2; local best records are retained.

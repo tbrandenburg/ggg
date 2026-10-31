@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#17344e"/><stop offset="1" stop-color="#352d4c"/></linearGradient></defs>
+  <rect width="640" height="360" rx="20" fill="url(#sky)"/>
+  <text x="28" y="43" fill="#b5e8f2" font-family="sans-serif" font-size="17" letter-spacing="4">ONE MORE FLOOR. ONE MORE WORLD.</text>
+  <path d="M55 70V340M585 70V340" stroke="#385b70" stroke-width="14"/>
+  <g fill="#b5e8f2"><path d="M90 307H310V319H90Z"/><path d="M315 225H480V237H315Z"/></g>
+  <path d="M135 165H355V177H135Z" fill="#84c49d"/>
+  <path d="M410 78H520V90H410Z" fill="#e4b2cd"/>
+  <path d="M105 233L125 207L145 233Z" fill="#335950"/><path d="M470 160L489 127L508 160Z" fill="#355361"/>
+  <circle cx="530" cy="202" r="28" fill="none" stroke="#b4e2d7" stroke-width="3"/>
+  <path d="M492 194L568 210" stroke="#b4e2d7" stroke-width="3"/>
+  <rect x="316" y="187" width="24" height="35" rx="5" fill="#7de2c6"/>
+  <circle cx="328" cy="178" r="12" fill="#f6d4b7"/>
+  <path d="M314 175H342M318 168H338" stroke="#f5ce70" stroke-width="7"/>
+  <path d="M309 212L286 219M305 202L280 209" stroke="#f5ce70" stroke-width="3" opacity=".6"/>
+  <path d="M570 318V270M560 282L570 270L580 282" stroke="#f5ce70" stroke-width="4" fill="none"/>
+</svg>
