@@ -20,6 +20,9 @@ dev = [
 requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
+[tool.uv]
+cache-dir = ".uv-cache"
+
 [tool.setuptools]
 packages = ["tools"]
 
