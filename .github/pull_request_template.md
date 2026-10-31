@@ -2,8 +2,8 @@
 
 ## Validation
 
-- [ ] `python3 -m unittest discover -s tests -v`
-- [ ] `python3 ggg.py check --smoke`
+- [ ] `uv run python -m unittest discover -s tests -v`
+- [ ] `uv run ggg check --smoke`
 - [ ] Played the affected game or gallery, if applicable
 
 For a new game, keep its scripts, artwork, and manifest in its own folder.

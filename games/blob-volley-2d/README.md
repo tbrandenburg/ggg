@@ -5,7 +5,7 @@
 An original, local two-player volleyball game inspired by the simple blob-and-ball idea of Blobby Volley. All characters, artwork, rules code, and meshes here are original; no assets or source were copied from that game.
 
 ```sh
-python3 ggg.py play blob-volley-2d
+uv run ggg play blob-volley-2d
 ```
 
 | Control | Action |

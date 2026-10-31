@@ -3,8 +3,8 @@
 ## Fast checks
 
 ```sh
-python3 -m unittest discover -s tests -v
-python3 ggg.py check
+uv run python -m unittest discover -s tests -v
+uv run ggg check
 ```
 
 Tests cover creating independent 2D/3D projects, discovery without registration, preserving existing work, atomic creation, invalid metadata, traversal and symlink boundaries, archive extraction, engine failures that report zero exit status, and preserving an existing distribution when export fails.
@@ -12,7 +12,7 @@ Tests cover creating independent 2D/3D projects, discovery without registration,
 ## Engine checks
 
 ```sh
-python3 ggg.py check --smoke
+uv run ggg check --smoke
 ```
 
 This imports the launcher, all games, and both templates through the pinned Godot editor. It then starts each project headlessly with `--smoke-test`. Captured `SCRIPT ERROR`, `Parse Error`, and `ERROR:` messages fail the command even when Godot exits with status zero. Each captured engine invocation has a three-minute timeout.

@@ -11,10 +11,10 @@ Linux uses separate `.pck` data files beside the executables. Keep these files w
 ## Build
 
 ```sh
-python3 ggg.py setup --templates
-python3 ggg.py check --smoke
-python3 ggg.py build --platform linux
-python3 ggg.py build --platform macos
+uv run ggg setup --templates
+uv run ggg check --smoke
+uv run ggg build --platform linux
+uv run ggg build --platform macos
 ```
 
 The official export template archive is approximately 1.3 GB. Install it once. The CLI can cross-export these platforms using the templates, but signing/notarization and native testing need appropriate machines.
