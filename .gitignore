@@ -29,6 +29,7 @@ __pycache__/
 *.pyc
 .tools/
 .venv/
+.uv-cache/
 dist/
 .DS_Store
 *.log

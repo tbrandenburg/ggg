@@ -12,13 +12,16 @@ ggg = "tools.ggg:main"
 
 [dependency-groups]
 dev = [
-    "ruff==0.14.3",
+    "ruff==0.17.3",
     "gdtoolkit==4.5.0",
 ]
 
 [build-system]
 requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
+
+[tool.uv]
+cache-dir = ".uv-cache"
 
 [tool.setuptools]
 packages = ["tools"]

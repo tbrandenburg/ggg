@@ -20,6 +20,8 @@ uv run ggg gallery
 
 `setup` downloads the official standard Godot editor for your computer and verifies its SHA-256 against `engine.lock.json`. The engine stays inside this repository's ignored `.tools` folder. The first `uv run` installs the project and locked development tools into `.venv`; no environment activation is needed. After the first sync and engine setup, everyday development works offline. Use `uv run --no-dev ggg …` if you only need the runtime tooling.
 
+uv keeps its project dependency cache in the ignored `.uv-cache/` folder beside `.venv`, so project commands do not depend on access to a separate user-level uv cache.
+
 Linux supports x86_64 and ARM64 development machines. macOS uses the universal Intel/Apple Silicon editor. A graphical desktop and OpenGL-compatible graphics are required for normal play. Source games also open directly in Godot.
 
 Already installed Godot? Set `GODOT_BIN` to its executable; its version must match the lock file. On a Mac the executable is inside `Godot.app/Contents/MacOS/Godot`.
