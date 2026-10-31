@@ -80,21 +80,9 @@ static func run(game) -> void:
 	game._unhandled_input(_action("journal"))
 	assert(not game.journal.visible)
 	game.player.set_physics_process(false)
-	# A repeatable route with overlap between adjacent floors, even far up the tower.
-	for route_seed in [1, 12345, 987654321]:
-		var previous: Rect2 = game.Layout.platform(0, route_seed)
-		for floor_id in range(1, 5001):
-			var rect: Rect2 = game.Layout.platform(floor_id, route_seed)
-			assert(rect == game.Layout.platform(floor_id, route_seed))
-			assert(rect.position.x >= game.Layout.LEFT and rect.end.x <= game.Layout.RIGHT)
-			assert(rect.position.x < previous.end.x and rect.end.x > previous.position.x)
-			var gap := previous.position.y - rect.position.y
-			var minimum_jump_height: float = (
-				pow(game.Climber.BASE_JUMP, 2) / (2 * game.Climber.GRAVITY)
-			)
-			assert(gap > 0 and gap < minimum_jump_height - 20)
-			previous = rect
-	assert(game.Layout.platform(9, 1) != game.Layout.platform(9, 12345))
+	var layout_checks = preload("res://layout_smoke.gd")
+	layout_checks.run(game)
+	await layout_checks.engine_transfers(game)
 	# Generated regions keep distinct identities beyond all 16 hand-authored families.
 	var names := {}
 	for region in range(1024):
@@ -105,7 +93,7 @@ static func run(game) -> void:
 		assert(data["friction"] >= 0.5 and data["jump_bonus"] >= 0)
 	assert(game.Biomes.at_floor(0)["name"] != game.Biomes.at_floor(320)["name"])
 	game.reached_floor = 0
-	game.player.position.y = game.Layout.START_Y - 20.5 * game.Layout.GAP
+	game.player.position.y = game.Layout.floor_y(20, game.seed_value) - 10
 	game._track_height()
 	assert(game.reached_floor == 20 and game.biome["family_id"] == 1)
 	game.player.position.y = game.Layout.START_Y - 40
@@ -144,5 +132,5 @@ static func run(game) -> void:
 	game.biome = game.Biomes.at_floor(0)
 	game._update_hud()
 	print(
-		"PASS Endless Tower: physics movement/jumps, momentum, wall bounce, one-way landing, combos, pause/journal, 15000 reachable seeded floors, 1024 biome regions, bounded streaming, camera/fall, replay, all 16 motifs"
+		"PASS Endless Tower: physics movement/jumps, momentum, wall bounce, one-way landing, combos, pause/journal, 15000 motion-validated randomized floors, 1024 biome regions, bounded streaming, camera/fall, replay, all 16 motifs"
 	)

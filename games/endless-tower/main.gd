@@ -111,11 +111,9 @@ func _restart() -> void:
 
 func _update_platforms() -> void:
 	# Jump straight to the visible range if the camera is moved very far for testing.
-	var first_visible := maxi(
-		0, floori((Layout.START_Y - (camera_top + VIEW_HEIGHT + 180)) / Layout.GAP)
-	)
+	var first_visible := maxi(0, Layout.floor_at_y(camera_top + VIEW_HEIGHT + 180, seed_value) - 1)
 	next_floor = maxi(next_floor, first_visible)
-	while Layout.START_Y - next_floor * Layout.GAP > camera_top - 450:
+	while Layout.floor_y(next_floor, seed_value) > camera_top - 450:
 		var rect := Layout.platform(next_floor, seed_value)
 		var body := StaticBody2D.new()
 		body.position = rect.get_center()
@@ -165,7 +163,7 @@ func scroll_speed() -> float:
 
 
 func _track_height() -> void:
-	var altitude := maxi(0, floori((Layout.START_Y - player.position.y) / Layout.GAP))
+	var altitude := Layout.floor_at_y(player.position.y, seed_value)
 	reached_floor = maxi(reached_floor, altitude)
 	best_floor = maxi(best_floor, reached_floor)
 	biome = Biomes.at_floor(reached_floor)

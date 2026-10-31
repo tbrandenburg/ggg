@@ -26,7 +26,7 @@ These execute real game scripts: the starters exercise Godot physics, while Pong
 
 - Blob Volley (2D and 3D): both players and jump bindings, simultaneous movement, court limits, pause, head contact and debounce, fast-ball substeps, net side/tape collisions, both scoring sides, serves, out-of-bounds, three-touch faults, deuce, and restart. The 3D version additionally checks real depth movement and bounds.
 
-- Endless Tower: actual physics movement/jumping, momentum bonus, wall bounce, one-way upward passage/landing, combo scoring without repeat farming, pause/journal, 15,000 reachable deterministic floors, 1,024 distinct regions, bounded streaming, camera/fall failure, and same-route restart.
+- Endless Tower: actual physics movement/jumping, momentum bonus, wall bounce, one-way upward passage/landing, combo scoring without repeat farming, pause/journal, 15,000 motion-validated randomized edges, eight real-engine jump transfers, shrinking width means and varied rises, 1,024 distinct regions, bounded streaming, camera/fall failure, and same-route restart.
 
 ## Manual play checklist
 

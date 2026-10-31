@@ -3,9 +3,9 @@
   <rect width="640" height="360" rx="20" fill="url(#sky)"/>
   <text x="28" y="43" fill="#b5e8f2" font-family="sans-serif" font-size="17" letter-spacing="4">ONE MORE FLOOR. ONE MORE WORLD.</text>
   <path d="M55 70V340M585 70V340" stroke="#385b70" stroke-width="14"/>
-  <g fill="#b5e8f2"><path d="M90 302H275V314H90Z"/><path d="M270 232H450V244H270Z"/></g>
-  <path d="M170 157H350V169H170Z" fill="#84c49d"/>
-  <path d="M335 88H520V100H335Z" fill="#e4b2cd"/>
+  <g fill="#b5e8f2"><path d="M90 307H310V319H90Z"/><path d="M315 225H480V237H315Z"/></g>
+  <path d="M135 165H355V177H135Z" fill="#84c49d"/>
+  <path d="M410 78H520V90H410Z" fill="#e4b2cd"/>
   <path d="M105 233L125 207L145 233Z" fill="#335950"/><path d="M470 160L489 127L508 160Z" fill="#355361"/>
   <circle cx="530" cy="202" r="28" fill="none" stroke="#b4e2d7" stroke-width="3"/>
   <path d="M492 194L568 210" stroke="#b4e2d7" stroke-width="3"/>

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Replace Endless Tower’s regular sine-wave stairs with seeded random widths/positions/rises, progressively smaller mean widths, motion-validated jumps, and height-aware streaming. Route generation is now version 2.
+
 - Add Endless Tower, an original momentum climber with wall bounces, one-way platforms, combos, rising-camera pressure, seeded routes, local records, a biome journal, 16 authored biome families, and endless remixed reaches.
 
 - Add independent Blob Volley 2D and 3D games with local two-player controls, jumping, net/head collisions, out-of-bounds rules, three-touch limits, and win-by-two scoring.

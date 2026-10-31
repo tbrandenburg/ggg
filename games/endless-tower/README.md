@@ -56,14 +56,22 @@ After floor 320, the climb continues through **remixed reaches**: new region nam
 
 Best altitude and score are stored locally in this game's `user://tower_save.cfg`; they are saved on game over, retry, Esc, or window close. No account or network access is needed. R repeats the displayed route seed; N changes it. Physics and artwork need no assets outside this game folder.
 
-Layouts are derived directly from the floor number and route seed. Adjacent platform spans overlap and vertical gaps stay below the weakest jump's height. Old platforms are removed and only the area around the camera is generated, keeping live platform counts bounded as the climb continues. Different biomes adjust friction, wind, or lift without reducing the minimum jump height.
+Generation now uses seeded randomness rather than a sine-wave staircase. Individual widths and horizontal positions vary, and vertical rises fluctuate between roughly **62 and 106 pixels**. The average width decreases by biome level: about **220 px initially, 166 px at level 5, 134 px at level 9, and 102 px at level 17**, gradually approaching an 84 px mean. Individual widths vary by up to 28% around that mean, so a later wide landing can still provide a breather.
+
+Each proposed step is checked against a numerical jump model using the real character's gravity, acceleration, and baseline jump. It starts from rest, excludes momentum/biome bonuses, checks still air and both maximum wind directions, and reserves room to brake on the landing. Platforms can have genuine horizontal gaps; overlap is no longer required. Eight representative transfers are also tested with the real Godot character.
+
+Twenty-floor chunks connect through validated boundary platforms, and an eight-chunk cache keeps distant generation cheap. The camera, altitude counter, streaming, and biome discovery use the generated floor heights instead of assuming fixed spacing. See [the algorithm and research notes](GENERATION.md).
+
+**Route format v2:** R still repeats the current seed exactly, but seeds from the earlier sine-wave generator now produce the new layout. Existing local records are retained.
+
 
 ## Learn by changing a rule
 
 - `player.gd`: acceleration, friction, gravity, coyote time, wall bounce, and momentum-powered jumps.
-- `layout.gd`: deterministic floor placement. Change the route curve, spacing, or widths, then check reachability.
+- `layout.gd`: seeded chunk sampling, smaller level means, varied heights, and validated connections.
+- `jump_model.gd`: the jump witness and air-braking controller; motion constants come from `player.gd`.
 - `biomes.gd`: add a biome family or change its palette, weather, and movement values.
 - `main.gd`: camera pressure, platform streaming, combos, records, journal, and code-drawn artwork.
-- `smoke.gd`: real movement/landing checks, 15,000 generated floors across three seeds, 1,024 distinct region identities, memory bounds, pause, failure, and replay.
+- `smoke.gd` and `layout_smoke.gd`: movement checks, 15,000 simulated jump edges, eight real-engine transfers, width/height statistics, 1,024 region identities, cache/streaming bounds, pause, failure, and replay.
 
 The game is designed as a learning project. Automated checks do not replace a human playtest of the difficulty curve. Native Mac play and native exports have not been verified for this addition.
