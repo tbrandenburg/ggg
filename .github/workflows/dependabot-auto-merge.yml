@@ -1,0 +1,77 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Read Dependabot update metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for successful project checks and enable auto-merge
+        if: >-
+          (steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+           steps.metadata.outputs.update-type == 'version-update:semver-minor') &&
+          (steps.metadata.outputs.package-ecosystem == 'github-actions' ||
+           steps.metadata.outputs.package-ecosystem == 'uv')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          workflow_id="$(gh api "repos/${REPOSITORY}/actions/workflows" \
+            --jq '.workflows[] | select(.path == ".github/workflows/ci.yml") | .id')"
+          if [[ -z "${workflow_id}" ]]; then
+            echo 'Could not find the project checks workflow.'
+            exit 1
+          fi
+
+          for attempt in {1..60}; do
+            runs="$(gh api \
+              --method GET \
+              "repos/${REPOSITORY}/actions/workflows/${workflow_id}/runs" \
+              -f "head_sha=${HEAD_SHA}" \
+              -f 'event=pull_request' \
+              -f per_page=100)"
+            latest_run="$(jq -c '[.workflow_runs[]] | sort_by(.created_at) | last // empty' <<<"${runs}")"
+
+            if [[ -n "${latest_run}" ]]; then
+              status="$(jq -r '.status' <<<"${latest_run}")"
+              conclusion="$(jq -r '.conclusion // empty' <<<"${latest_run}")"
+
+              if [[ "${status}" == completed ]]; then
+                if [[ "${conclusion}" != success ]]; then
+                  echo "Project checks completed with conclusion '${conclusion:-unknown}'; not enabling auto-merge."
+                  exit 1
+                fi
+                break
+              fi
+            fi
+
+            if [[ "${attempt}" == 60 ]]; then
+              echo 'Timed out waiting for the project checks to complete.'
+              exit 1
+            fi
+
+            sleep 10
+          done
+
+          gh pr merge "${PR_NUMBER}" --auto --squash --delete-branch
