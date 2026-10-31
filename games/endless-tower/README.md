@@ -3,7 +3,7 @@
 An original 2D momentum climber inspired by Icy Tower's run, jump, and keep-climbing idea. The character, artwork, generator, biome system, and scripts are original; no Icy Tower assets or source code are used.
 
 ```sh
-python3 ggg.py play endless-tower
+uv run ggg play endless-tower
 ```
 
 ![Glacier Gate](../../docs/images/endless-tower-glacier.png)

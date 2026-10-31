@@ -34,11 +34,11 @@ The camera is deliberately fixed at an angle and follows the player. There is no
 
 ## Your own game
 
-1. Create a starter with `python3 ggg.py new my-game --dimension 2d`.
+1. Create a starter with `uv run ggg new my-game --dimension 2d`.
 2. Change its title and description in `game.json`.
 3. Change one rule: collect, dodge, race, or explore.
 4. Draw a thumbnail by editing `tile.svg`, or replace it with your own PNG and update the manifest.
-5. Run `python3 ggg.py check` and refresh the gallery.
+5. Run `uv run ggg check` and refresh the gallery.
 6. Explain the rule to someone and watch them play.
 
 For a concept refresher, try [GDQuest's Learn GDScript From Zero](https://gdquest.github.io/learn-gdscript/). Its lessons complement editing real games. It is optional and separate from this repository.

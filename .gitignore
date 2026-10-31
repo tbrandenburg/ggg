@@ -33,4 +33,6 @@ dist/
 .DS_Store
 *.log
 coverage.xml
+*.egg-info/
+.ruff_cache/
 

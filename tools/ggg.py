@@ -101,7 +101,7 @@ def engine(root: Path = ROOT) -> str:
                     f"Expected Godot {version}, got {result.stdout.strip()}. Run setup."
                 )
             return str(Path(candidate).resolve())
-    raise ArcadeError("Godot was not found. Run: python3 ggg.py setup (or set GODOT_BIN).")
+    raise ArcadeError("Godot was not found. Run: uv run ggg setup (or set GODOT_BIN).")
 
 
 def fetch_verified(asset: dict, destination: Path, root: Path = ROOT) -> None:
@@ -195,7 +195,7 @@ def new_game(slug: str, dimension: str, title: str | None = None, root: Path = R
         )
         read_game(staging)
         staging.rename(destination)
-    print(f"Created {destination.relative_to(root)}. Play: python3 ggg.py play {slug}")
+    print(f"Created {destination.relative_to(root)}. Play: uv run ggg play {slug}")
     return destination
 
 

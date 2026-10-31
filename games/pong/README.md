@@ -3,7 +3,7 @@
 A local keyboard game for two people. First to **seven** wins.
 
 ```sh
-python3 ggg.py play pong
+uv run ggg play pong
 ```
 
 | Control | Action |
@@ -27,4 +27,4 @@ All eight movement keys work independently, including simultaneous input. Some k
 - Read `_advance_ball()`: it splits motion into small steps so a fast ball cannot skip through a paddle.
 - Read `_bounce()`: the impact position controls the ball's return angle.
 
-The game needs no assets or helpers from another game folder. Its smoke test exercises key mappings, independent movement, boundaries, pause, wall and paddle bounces, fast-ball collisions, scoring, serves, victory, and restart. It is included automatically in `python3 ggg.py check --smoke`.
+The game needs no assets or helpers from another game folder. Its smoke test exercises key mappings, independent movement, boundaries, pause, wall and paddle bounces, fast-ball collisions, scoring, serves, victory, and restart. It is included automatically in `uv run ggg check --smoke`.

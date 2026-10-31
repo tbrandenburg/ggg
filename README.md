@@ -10,15 +10,15 @@ A local-first game workshop for learning to program. Make independent **2D and 3
 
 ## Play in three commands
 
-Install [Python 3.11 or newer](https://www.python.org/downloads/), then open a terminal in this repository:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then open a terminal in this repository. uv manages Python and the project environment automatically (Python 3.12 is the development default; 3.11+ is supported):
 
 ```sh
-python3 ggg.py setup
-python3 ggg.py doctor
-python3 ggg.py gallery
+uv run ggg setup
+uv run ggg doctor
+uv run ggg gallery
 ```
 
-`setup` downloads the official standard Godot editor for your computer and verifies its SHA-256 against `engine.lock.json`. The engine stays inside this repository's ignored `.tools` folder. No pip installation, account, or cloud service is required to create or play games. After setup, everyday development works offline.
+`setup` downloads the official standard Godot editor for your computer and verifies its SHA-256 against `engine.lock.json`. The engine stays inside this repository's ignored `.tools` folder. The first `uv run` installs the project and locked development tools into `.venv`; no environment activation is needed. After the first sync and engine setup, everyday development works offline. Use `uv run --no-dev ggg …` if you only need the runtime tooling.
 
 Linux supports x86_64 and ARM64 development machines. macOS uses the universal Intel/Apple Silicon editor. A graphical desktop and OpenGL-compatible graphics are required for normal play. Source games also open directly in Godot.
 
@@ -27,9 +27,9 @@ Already installed Godot? Set `GODOT_BIN` to its executable; its version must mat
 ## Make your first game
 
 ```sh
-python3 ggg.py new moon-jumper --dimension 2d --title "Moon Jumper"
-python3 ggg.py play moon-jumper
-python3 ggg.py edit moon-jumper
+uv run ggg new moon-jumper --dimension 2d --title "Moon Jumper"
+uv run ggg play moon-jumper
+uv run ggg edit moon-jumper
 ```
 
 Open `games/moon-jumper/player.gd` in your favorite code editor. Change `speed` or `jump_speed`, save, and run the game again. Refresh the gallery with **F5** to see newly created games. Choose `--dimension 3d` for a floating-island starter.
@@ -55,18 +55,18 @@ The gallery includes search, 2D/3D filters, keyboard focus, eight slots per page
 
 | Command | What it does |
 | --- | --- |
-| `python3 ggg.py setup` | Install the pinned Godot editor |
-| `python3 ggg.py setup --templates` | Also install export templates; approximately 1.3 GB extra |
-| `python3 ggg.py doctor` | Check the environment and manifests |
-| `python3 ggg.py list` | List automatically discovered games |
-| `python3 ggg.py gallery` | Open the game gallery |
-| `python3 ggg.py new NAME --dimension 2d` | Copy a playable starter into a new folder |
-| `python3 ggg.py play NAME` | Run a source game immediately |
-| `python3 ggg.py edit NAME` | Open a game's Godot editor |
-| `python3 ggg.py check` | Validate game metadata and files |
-| `python3 ggg.py check --smoke` | Import and exercise the gallery, games, and templates |
-| `python3 ggg.py build --platform linux` | Export a portable Linux x86_64 collection |
-| `python3 ggg.py build --platform macos` | Export a portable universal macOS collection |
+| `uv run ggg setup` | Install the pinned Godot editor |
+| `uv run ggg setup --templates` | Also install export templates; approximately 1.3 GB extra |
+| `uv run ggg doctor` | Check the environment and manifests |
+| `uv run ggg list` | List automatically discovered games |
+| `uv run ggg gallery` | Open the game gallery |
+| `uv run ggg new NAME --dimension 2d` | Copy a playable starter into a new folder |
+| `uv run ggg play NAME` | Run a source game immediately |
+| `uv run ggg edit NAME` | Open a game's Godot editor |
+| `uv run ggg check` | Validate game metadata and files |
+| `uv run ggg check --smoke` | Import and exercise the gallery, games, and templates |
+| `uv run ggg build --platform linux` | Export a portable Linux x86_64 collection |
+| `uv run ggg build --platform macos` | Export a portable universal macOS collection |
 
 ## How folders become games
 
@@ -79,9 +79,9 @@ See [the manifest contract](docs/architecture.md#manifest-contract) and its [edi
 ## Build and share
 
 ```sh
-python3 ggg.py setup --templates
-python3 ggg.py build --platform linux
-python3 ggg.py build --platform macos
+uv run ggg setup --templates
+uv run ggg build --platform linux
+uv run ggg build --platform macos
 ```
 
 Outputs go to `dist/linux/` and `dist/macos/`. Keep the `games` folder beside the launcher. Players need neither Python nor a Godot installation. Exports are **unsigned local builds**; [distribution notes](docs/distribution.md) explain Mac signing and what has been tested.
@@ -91,17 +91,15 @@ The manual **Build playable bundles** GitHub Actions workflow produces downloada
 ## Develop the platform
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -r requirements-dev.txt
-ruff check .
-ruff format --check .
-gdformat --check launcher templates games tools/*.gd
-python -m unittest discover -s tests -v
-python ggg.py check --smoke
+uv sync --locked
+make lint
+make test
+make smoke
 ```
 
-The Python tools use only the standard library at runtime. Development dependencies are pinned. GitHub Actions are pinned to commit SHAs, permissions are read-only, and Dependabot proposes updates.
+The Python tools use only the standard library at runtime. Development dependencies are declared in `pyproject.toml` and resolved in the committed `uv.lock`. Run `uv add --dev PACKAGE` to add a development tool and commit both files. CI uses `uv sync --locked` to detect stale lockfiles.
+
+Run `make help` for setup, play, edit, validation, formatting, and export shortcuts. For example, `make new GAME=moon-jumper DIMENSION=2d`, `make play GAME=moon-jumper`, and `make build PLATFORM=linux`. See [AGENTS.md](AGENTS.md) for the development workflow. The Python package supplies an editable CLI for this checkout; share games using `uv run ggg build`, which exports the Godot projects. GitHub Actions are pinned to commit SHAs, permissions are read-only, and Dependabot proposes updates.
 
 ## Read next
 
